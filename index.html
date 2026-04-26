@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title>Para Pili 💜</title>
 
-  <!-- Librería de confetti -->
+  <!-- Confetti -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
   <style>
@@ -17,102 +17,85 @@
       justify-content: center;
       align-items: center;
       height: 100vh;
-      text-align: center;
       overflow: hidden;
+      text-align: center;
     }
 
-    .container {
+    .pantalla {
       cursor: pointer;
+    }
+
+    .titulo {
+      font-size: 2rem;
+      letter-spacing: 3px;
       animation: fadeIn 2s ease;
     }
 
-    h1 {
-      font-size: 3rem;
-      letter-spacing: 5px;
+    .sub {
+      opacity: 0.7;
+      margin-top: 10px;
     }
 
-    .dots span {
-      font-size: 2rem;
-      margin: 0 6px;
-      animation: bounce 1s infinite alternate;
-    }
-
-    .dot1 { color: red; }
-    .dot2 { color: blue; animation-delay: 0.2s; }
-    .dot3 { color: yellow; animation-delay: 0.4s; }
-
-    #mensaje {
+    #contenido {
       display: none;
-      font-size: 1.6rem;
-      line-height: 1.6;
-      max-width: 600px;
+      flex-direction: column;
+      align-items: center;
       animation: fadeIn 1.5s ease;
     }
 
-    .firma {
+    img {
+      max-width: 90%;
+      border-radius: 12px;
       margin-top: 20px;
-      font-style: italic;
-    }
-
-    @keyframes bounce {
-      from { transform: translateY(0px); }
-      to { transform: translateY(-10px); }
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      animation: zoomIn 1.5s ease;
     }
 
     @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
+      from {opacity: 0;}
+      to {opacity: 1;}
+    }
+
+    @keyframes zoomIn {
+      from {transform: scale(0.8);}
+      to {transform: scale(1);}
     }
   </style>
 </head>
 
-<body onclick="activarSorpresa()">
+<body onclick="iniciar()">
 
-  <div class="container">
-    <h1>
-      PILI
-      <div class="dots">
-        <span class="dot1">•</span>
-        <span class="dot2">•</span>
-        <span class="dot3">•</span>
-      </div>
-    </h1>
-
-    <p>(tocá la pantalla 👆)</p>
-
-    <div id="mensaje">
-      🎉💜 ¡Feliz cumpleaños Pili! 💜🎉 <br><br>
-
-      Hoy toca festejar a lo grande 🥳<br>
-      risas, amor y momentos lindos<br><br>
-
-      <b>Could this BE any more special? 😄</b><br><br>
-
-      Te queremos muchísimo ❤️<br>
-
-      <div class="firma">
-        Andy, Agus, Anita, Mary, Tata y Mamama
-      </div>
+  <!-- Pantalla inicial -->
+  <div class="pantalla" id="inicio">
+    <div class="titulo">
+      THE ONE WHERE <br>
+      <b>PILI TURNS OLDER</b>
     </div>
+    <div class="sub">(tocá la pantalla 👆)</div>
   </div>
 
-  <!-- Audio (subí tu propio archivo) -->
+  <!-- Contenido -->
+  <div id="contenido">
+    <h2>🎉 ¡Feliz cumple Pili! 🎉</h2>
+    <img src="imagen.jpg" alt="Familia">
+  </div>
+
+  <!-- Audio -->
   <audio id="audio" src="friends.mp3"></audio>
 
   <script>
-    function activarSorpresa() {
-      document.querySelector("h1").style.display = "none";
-      document.querySelector("p").style.display = "none";
-      document.getElementById("mensaje").style.display = "block";
+    function iniciar() {
+      document.getElementById("inicio").style.display = "none";
+      document.getElementById("contenido").style.display = "flex";
 
       // 🎊 Confetti
       confetti({
-        particleCount: 150,
-        spread: 90,
+        particleCount: 180,
+        spread: 100,
         origin: { y: 0.6 }
       });
 
-      // 🔊 Música
+      // 🎵 Audio
       const audio = document.getElementById("audio");
       audio.play().catch(() => {});
     }
