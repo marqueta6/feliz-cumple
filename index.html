@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Para Pili 💜</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+      background: #1f1f1f;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .container {
+      cursor: pointer;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+    }
+
+    .dots span {
+      font-size: 2rem;
+      margin: 0 5px;
+    }
+
+    .dot1 { color: red; }
+    .dot2 { color: blue; }
+    .dot3 { color: yellow; }
+
+    #mensaje {
+      display: none;
+      font-size: 1.5rem;
+      line-height: 1.6;
+      max-width: 600px;
+    }
+
+    .firma {
+      margin-top: 20px;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body onclick="mostrarMensaje()">
+
+  <div class="container">
+    <h1>
+      PILI
+      <div class="dots">
+        <span class="dot1">•</span>
+        <span class="dot2">•</span>
+        <span class="dot3">•</span>
+      </div>
+    </h1>
+
+    <p>(tocá la pantalla 👆)</p>
+
+    <div id="mensaje">
+      🎉💜 ¡Feliz cumpleaños Pili! 💜🎉 <br><br>
+
+      Esperamos que tengas un día increíble,<br>
+      lleno de risas, momentos lindos<br>
+      y todo lo que te hace feliz 🥳<br><br>
+
+      Como dirían en Friends...<br>
+      <b>WE WERE ON A BREAK... DE LA RUTINA 😄</b><br><br>
+
+      Te queremos mucho ❤️<br>
+
+      <div class="firma">
+        Andy, Agus, Anita, Mary, Tata y Mamama
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function mostrarMensaje() {
+      document.querySelector("h1").style.display = "none";
+      document.querySelector("p").style.display = "none";
+      document.getElementById("mensaje").style.display = "block";
+    }
+  </script>
+
+</body>
+</html>
