@@ -68,6 +68,35 @@
     font-size: 1.2rem;
   }
 
+  #puertaContainer {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+#puerta {
+  width: 90%;
+  max-width: 400px;
+  transform-origin: left;
+  transition: transform 1s ease-in-out;
+  border-radius: 10px;
+}
+
+#textoPuerta {
+  margin-top: 20px;
+  font-size: 1.2rem;
+  animation: pulse 1.5s infinite;
+}
+
+.abrir {
+  transform: perspective(1000px) rotateY(-75deg);
+}
+
   /* Animación de “tocá” */
   @keyframes pulse {
     0% { transform: scale(1); opacity: 0.8; }
@@ -140,6 +169,10 @@
     // PASO 2 → cambiar a regalo
     else if (paso === 2) {
       
+      contenido.innerHTML = `
+        <p>Tocá una vez mas</p>
+        <p>para la sorpresa final</p>
+      `;
       confetti({
         particleCount: 120,
         spread: 80
