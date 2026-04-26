@@ -94,22 +94,17 @@
 
 <body>
 
-  <!-- Pantalla inicial -->
-  <div class="pantalla" id="inicio">
-    <div class="titulo">
-      THE ONE WHERE <br>
-      <b>PILI TURNS 47</b>
-    </div>
-    <div class="sub">(tocá la pantalla 👆)</div>
-  </div>
+<div id="puertaContainer">
+  <img id="puerta" src="puerta friends.png" alt="Puerta">
+  <div id="textoPuerta">👆 Tocá la puerta</div>
+</div>
 
-  <!-- Contenido -->
-  <div id="contenido">
-    <img id="imagen" src="puerta friends.png" alt="puerta">
-  </div>
+<div id="contenido" style="display:none; flex-direction:column; align-items:center;">
+  <h2>🎉 ¡Feliz cumple Pili! 🎉</h2>
+  <img id="imagen" src="imagen.png">
+</div>
 
-  <!-- Audio -->
-  <audio id="audio" src="friends.mp3"></audio>
+<audio id="audio" src="friends.mp3"></audio>
 
 <script>
   let paso = 0;
@@ -117,41 +112,43 @@
   document.addEventListener("click", function () {
     paso++;
 
-    const inicio = document.getElementById("inicio");
+    const puerta = document.getElementById("puerta");
+    const contenedor = document.getElementById("puertaContainer");
     const contenido = document.getElementById("contenido");
     const imagen = document.getElementById("imagen");
     const audio = document.getElementById("audio");
 
-    // PASO 1 → primera interacción
+    // PASO 1 → abrir puerta 🚪
     if (paso === 1) {
-      inicio.style.display = "none";
-      contenido.style.display = "flex";
+      puerta.classList.add("abrir");
 
-      imagen.src = "imagen.jpg";
+      setTimeout(() => {
+        contenedor.style.display = "none";
+        contenido.style.display = "flex";
 
-      confetti({
-        particleCount: 180,
-        spread: 100,
-        origin: { y: 0.6 }
-      });
+        confetti({
+          particleCount: 180,
+          spread: 100,
+          origin: { y: 0.6 }
+        });
 
-      // 🔊 clave: play directo en el click
-      audio.currentTime = 0;
-      audio.play().catch(() => {});
+        audio.currentTime = 0;
+        audio.play().catch(() => {});
+      }, 1000);
     }
 
-    // PASO 2 → mostrar regalo
+    // PASO 2 → cambiar a regalo
     else if (paso === 2) {
-      imagen.src = "regalo.jpg";
-
+      
       confetti({
         particleCount: 120,
         spread: 80
       });
     }
 
-    // PASO 3 → cierre
+    // PASO 3 → final
     else if (paso === 3) {
+      imagen.src = "regalo.jpeg";
       contenido.innerHTML = `
         <h2>💜 Disfrutá tu regalo Pili 💜</h2>
         <p>Porque te lo merecés TODO 😄</p>
