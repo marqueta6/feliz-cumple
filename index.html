@@ -3,10 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <title>Para Pili 💜</title>
+
+  <!-- Librería de confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
   <style>
     body {
       margin: 0;
-      font-family: 'Arial', sans-serif;
+      font-family: Arial, sans-serif;
       background: #1f1f1f;
       color: white;
       display: flex;
@@ -19,35 +23,50 @@
 
     .container {
       cursor: pointer;
+      animation: fadeIn 2s ease;
     }
 
     h1 {
-      font-size: 2.5rem;
+      font-size: 3rem;
+      letter-spacing: 5px;
     }
 
     .dots span {
       font-size: 2rem;
-      margin: 0 5px;
+      margin: 0 6px;
+      animation: bounce 1s infinite alternate;
     }
 
     .dot1 { color: red; }
-    .dot2 { color: blue; }
-    .dot3 { color: yellow; }
+    .dot2 { color: blue; animation-delay: 0.2s; }
+    .dot3 { color: yellow; animation-delay: 0.4s; }
 
     #mensaje {
       display: none;
-      font-size: 1.5rem;
+      font-size: 1.6rem;
       line-height: 1.6;
       max-width: 600px;
+      animation: fadeIn 1.5s ease;
     }
 
     .firma {
       margin-top: 20px;
       font-style: italic;
     }
+
+    @keyframes bounce {
+      from { transform: translateY(0px); }
+      to { transform: translateY(-10px); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
   </style>
 </head>
-<body onclick="mostrarMensaje()">
+
+<body onclick="activarSorpresa()">
 
   <div class="container">
     <h1>
@@ -64,14 +83,12 @@
     <div id="mensaje">
       🎉💜 ¡Feliz cumpleaños Pili! 💜🎉 <br><br>
 
-      Esperamos que tengas un día increíble,<br>
-      lleno de risas, momentos lindos<br>
-      y todo lo que te hace feliz 🥳<br><br>
+      Hoy toca festejar a lo grande 🥳<br>
+      risas, amor y momentos lindos<br><br>
 
-      Como dirían en Friends...<br>
-      <b>WE WERE ON A BREAK... DE LA RUTINA 😄</b><br><br>
+      <b>Could this BE any more special? 😄</b><br><br>
 
-      Te queremos mucho ❤️<br>
+      Te queremos muchísimo ❤️<br>
 
       <div class="firma">
         Andy, Agus, Anita, Mary, Tata y Mamama
@@ -79,11 +96,25 @@
     </div>
   </div>
 
+  <!-- Audio (subí tu propio archivo) -->
+  <audio id="audio" src="friends.mp3"></audio>
+
   <script>
-    function mostrarMensaje() {
+    function activarSorpresa() {
       document.querySelector("h1").style.display = "none";
       document.querySelector("p").style.display = "none";
       document.getElementById("mensaje").style.display = "block";
+
+      // 🎊 Confetti
+      confetti({
+        particleCount: 150,
+        spread: 90,
+        origin: { y: 0.6 }
+      });
+
+      // 🔊 Música
+      const audio = document.getElementById("audio");
+      audio.play().catch(() => {});
     }
   </script>
 
