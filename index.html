@@ -69,7 +69,7 @@
   <div class="pantalla" id="inicio">
     <div class="titulo">
       THE ONE WHERE <br>
-      <b>PILI TURNS OLDER</b>
+      <b>PILI TURNS 47</b>
     </div>
     <div class="sub">(tocá la pantalla 👆)</div>
   </div>
@@ -83,23 +83,55 @@
   <!-- Audio -->
   <audio id="audio" src="friends.mp3"></audio>
 
-  <script>
-    function iniciar() {
+<script>
+  let paso = 0;
+
+  function iniciar() {
+    paso++;
+
+    // PASO 1 → mostrar foto familiar
+    if (paso === 1) {
       document.getElementById("inicio").style.display = "none";
       document.getElementById("contenido").style.display = "flex";
 
-      // 🎊 Confetti
+      document.getElementById("imagen").src = "imagen.jpg";
+
       confetti({
         particleCount: 180,
         spread: 100,
         origin: { y: 0.6 }
       });
 
-      // 🎵 Audio
       const audio = document.getElementById("audio");
       audio.play().catch(() => {});
     }
-  </script>
+
+    // PASO 2 → mostrar regalo 💸
+    else if (paso === 2) {
+      document.getElementById("imagen").src = "regalo.jpg";
+
+      confetti({
+        particleCount: 120,
+        spread: 80,
+        origin: { y: 0.6 }
+      });
+    }
+
+    // PASO 3 → mensaje final
+    else if (paso === 3) {
+      document.getElementById("contenido").innerHTML = `
+        <h2>💜 Disfrutá tu regalo Pili 💜</h2>
+        <p>Porque te lo merecés TODO 😄</p>
+        <p>Con amor,<br>Andy, Agus, Anita, Mary, Tata y Mamama</p>
+      `;
+
+      confetti({
+        particleCount: 200,
+        spread: 120
+      });
+    }
+  }
+</script>
 
 </body>
 </html>
