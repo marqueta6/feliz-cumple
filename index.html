@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>🎉 Cumples 🎉</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #1f1f1f, #3a3a3a);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100dvh;
+      text-align: center;
+      padding: 20px;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 40px;
+    }
+
+    .cards {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .card {
+      background: #2a2a2a;
+      border-radius: 16px;
+      padding: 25px;
+      text-decoration: none;
+      color: white;
+      font-size: 1.4rem;
+      font-weight: bold;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .card:active {
+      transform: scale(0.96);
+    }
+
+    .card:hover {
+      transform: scale(1.03);
+      box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+    }
+
+    /* estilos individuales */
+    .pili {
+      background: linear-gradient(135deg, #ff7eb3, #ff758c);
+    }
+
+    .agus {
+      background: linear-gradient(135deg, #ff0000, #ffffff);
+      color: black;
+    }
+
+    .emoji {
+      font-size: 2rem;
+      display: block;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>🎉 Elegí el cumple 🎉</h1>
+
+  <div class="cards">
+
+    <a href="/pili/" class="card pili">
+      <span class="emoji">💜</span>
+      Cumple de Pili
+    </a>
+
+    <a href="/agus/" class="card agus">
+      <span class="emoji">🦁</span>
+      Cumple de Agus
+    </a>
+
+  </div>
+
+</body>
+</html>
