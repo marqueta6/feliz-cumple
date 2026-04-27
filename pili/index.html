@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Para Pili 💜</title>
+
+  <!-- Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <style>
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #1f1f1f;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100dvh;
+    text-align: center;
+    padding: 20px;
+  }
+
+  .pantalla {
+    cursor: pointer;
+    width: 100%;
+  }
+
+  .titulo {
+    font-size: 2.2rem;
+    line-height: 1.3;
+    font-weight: bold;
+  }
+
+  .titulo b {
+    font-size: 2.6rem;
+    display: block;
+    margin-top: 10px;
+  }
+
+  .sub {
+    margin-top: 25px;
+    font-size: 1.2rem;
+    opacity: 0.8;
+    animation: pulse 1.5s infinite;
+  }
+
+  #contenido {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+
+  img {
+    width: 100%;
+    max-width: 1000px;
+    border-radius: 12px;
+    margin-top: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  }
+
+  h2 {
+    font-size: 1.8rem;
+  }
+
+  p {
+    font-size: 1.2rem;
+  }
+
+#puertaContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100dvh;
+  background: black;
+  overflow: hidden;
+}
+
+#puerta {
+  width: 100vw;
+  height: 100dvh;
+  object-fit: cover;
+  transform-origin: left;
+  transition: transform 1s ease-in-out;
+}
+
+.abrir {
+  transform: perspective(1000px) rotateY(-75deg);
+}
+
+  /* Animación de “tocá” */
+  @keyframes pulse {
+    0% { transform: scale(1); opacity: 0.8; }
+    50% { transform: scale(1.1); opacity: 1; }
+    100% { transform: scale(1); opacity: 0.8; }
+  }
+
+</style>
+</head>
+
+<body>
+
+<div id="puertaContainer">
+  <img id="puerta" src="puerta friends.png" alt="Puerta">
+</div>
+
+<div id="contenido">
+  <img id="imagen" src="imagen.png">
+  <div id="textoMedio"></div>
+  <div id="textoFinal"></div>
+</div>
+
+<audio id="audio" src="friends.mp3"></audio>
+
+<script>
+  let paso = 0;
+
+  document.addEventListener("click", function () {
+    paso++;
+
+    const puerta = document.getElementById("puerta");
+    const contenedor = document.getElementById("puertaContainer");
+    const contenido = document.getElementById("contenido");
+    const imagen = document.getElementById("imagen");
+    const audio = document.getElementById("audio");
+
+    // PASO 1 → abrir puerta 🚪
+    if (paso === 1) {
+      puerta.classList.add("abrir");
+
+      setTimeout(() => {
+        contenedor.style.display = "none";
+        contenido.style.display = "flex";
+
+        audio.currentTime = 0;
+        audio.play().catch(() => {});
+      }, 1000);
+      document.getElementById("textoMedio").innerHTML = `
+        <h2>Toca una vez mas para recibir tu regalo</h2>
+    `;
+    }
+    
+    // PASO 2 → mostrar rel comprobante del regalo y el msj final
+    else if (paso === 2) {
+      imagen.src = "regalo.jpeg";
+      document.getElementById("textoMedio").innerHTML = ``;
+      document.getElementById("textoFinal").innerHTML = `
+        <h2>💜 Que lo disfrutes!! 💜</h2>
+        <p>Andy, Agus, Anita, Mary, Tata y Mamama</p>
+    `;
+
+    confetti({
+        particleCount: 200,
+        spread: 120
+      });
+    }
+  });
+</script>
+
+</body>
+</html>
