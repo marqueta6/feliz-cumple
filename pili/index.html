@@ -54,7 +54,7 @@
 
   img {
     width: 100%;
-    max-width: 420px;
+    max-width: 1000px;
     border-radius: 12px;
     margin-top: 20px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.5);
@@ -68,6 +68,28 @@
     font-size: 1.2rem;
   }
 
+#puertaContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100dvh;
+  background: black;
+  overflow: hidden;
+}
+
+#puerta {
+  width: 100vw;
+  height: 100dvh;
+  object-fit: cover;
+  transform-origin: left;
+  transition: transform 1s ease-in-out;
+}
+
+.abrir {
+  transform: perspective(1000px) rotateY(-75deg);
+}
+
   /* Animación de “tocá” */
   @keyframes pulse {
     0% { transform: scale(1); opacity: 0.8; }
@@ -75,41 +97,22 @@
     100% { transform: scale(1); opacity: 0.8; }
   }
 
-  /* 📱 Ajustes extra para celulares chicos */
-  @media (max-width: 400px) {
-    .titulo {
-      font-size: 1.8rem;
-    }
-
-    .titulo b {
-      font-size: 2.2rem;
-    }
-
-    .sub {
-      font-size: 1rem;
-    }
-  }
 </style>
 </head>
 
 <body>
 
-  <!-- Pantalla inicial -->
-  <div class="pantalla" id="inicio">
-    <div class="titulo">
-      THE ONE WHERE <br>
-      <b>PILI TURNS 47</b>
-    </div>
-    <div class="sub">(tocá la pantalla 👆)</div>
-  </div>
+<div id="puertaContainer">
+  <img id="puerta" src="puerta friends.png" alt="Puerta">
+</div>
 
-  <!-- Contenido -->
-  <div id="contenido">
-    <img id="imagen" src="puerta friends.png" alt="puerta">
-  </div>
+<div id="contenido">
+  <img id="imagen" src="imagen.png">
+  <div id="textoMedio"></div>
+  <div id="textoFinal"></div>
+</div>
 
-  <!-- Audio -->
-  <audio id="audio" src="friends.mp3"></audio>
+<audio id="audio" src="friends.mp3"></audio>
 
 <script>
   let paso = 0;
@@ -117,48 +120,38 @@
   document.addEventListener("click", function () {
     paso++;
 
-    const inicio = document.getElementById("inicio");
+    const puerta = document.getElementById("puerta");
+    const contenedor = document.getElementById("puertaContainer");
     const contenido = document.getElementById("contenido");
     const imagen = document.getElementById("imagen");
     const audio = document.getElementById("audio");
 
-    // PASO 1 → primera interacción
+    // PASO 1 → abrir puerta 🚪
     if (paso === 1) {
-      inicio.style.display = "none";
-      contenido.style.display = "flex";
+      puerta.classList.add("abrir");
 
-      imagen.src = "imagen.jpg";
+      setTimeout(() => {
+        contenedor.style.display = "none";
+        contenido.style.display = "flex";
 
-      confetti({
-        particleCount: 180,
-        spread: 100,
-        origin: { y: 0.6 }
-      });
-
-      // 🔊 clave: play directo en el click
-      audio.currentTime = 0;
-      audio.play().catch(() => {});
+        audio.currentTime = 0;
+        audio.play().catch(() => {});
+      }, 1000);
+      document.getElementById("textoMedio").innerHTML = `
+        <h2>Toca una vez mas para recibir tu regalo</h2>
+    `;
     }
-
-    // PASO 2 → mostrar regalo
+    
+    // PASO 2 → mostrar rel comprobante del regalo y el msj final
     else if (paso === 2) {
-      imagen.src = "regalo.jpg";
+      imagen.src = "regalo.jpeg";
+      document.getElementById("textoMedio").innerHTML = ``;
+      document.getElementById("textoFinal").innerHTML = `
+        <h2>💜 Que lo disfrutes!! 💜</h2>
+        <p>Andy, Agus, Anita, Mary, Tata y Mamama</p>
+    `;
 
-      confetti({
-        particleCount: 120,
-        spread: 80
-      });
-    }
-
-    // PASO 3 → cierre
-    else if (paso === 3) {
-      contenido.innerHTML = `
-        <h2>💜 Disfrutá tu regalo Pili 💜</h2>
-        <p>Porque te lo merecés TODO 😄</p>
-        <p>Con amor,<br>Andy, Agus, Anita, Mary, Tata y Mamama</p>
-      `;
-
-      confetti({
+    confetti({
         particleCount: 200,
         spread: 120
       });
