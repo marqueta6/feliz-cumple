@@ -40,7 +40,7 @@ La idea:
 
     #textoInicio {
       position: absolute;
-      bottom: 400px;
+      bottom: 200px;
       width: 100%;
       text-align: center;
       color: white;
@@ -91,7 +91,7 @@ La idea:
 }
 #textoRegalo {
   position: fixed;
-  bottom: 400px;
+  bottom: 200px;
   width: 100%;
   text-align: center;
 
@@ -121,6 +121,54 @@ La idea:
     transform: scale(1);
   }
 }
+#giftScreen {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+
+  background: black;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  opacity: 0;
+  pointer-events: none;
+
+  transition: opacity 1s ease;
+}
+
+#giftImage {
+  max-width: 90%;
+  max-height: 70vh;
+  object-fit: contain;
+
+  border-radius: 20px;
+}
+
+#giftTopText {
+  color: white;
+  font-size: 3rem;
+  font-weight: bold;
+  text-align: center;
+
+  margin-bottom: 30px;
+
+  padding: 0 20px;
+}
+
+#giftBottomText {
+  color: white;
+  font-size: 2rem;
+  text-align: center;
+
+  margin-top: 25px;
+
+  opacity: 0.9;
+
+  padding: 0 20px;
+}
 
   </style>
 </head>
@@ -144,11 +192,27 @@ La idea:
 
 <!-- final -->
 <div id="final">
-  <img id="finalImage" src="final1.jpg">
+  <img id="finalImage" src="final.jpg">
 </div>
 
 <div id="textoRegalo">
   👆 Tocá de nuevo para recibir tu regalo
+</div>
+
+<!-- regalo final -->
+<div id="giftScreen">
+
+  <div id="giftTopText">
+    Feliz cumple Mary 🥳!!!<br>
+    Que lo disfrutes! ❤️
+  </div>
+
+  <img id="giftImage" src="regalo.jpg">
+
+  <div id="giftBottomText">
+    Andy, Agus, Pili, Anita, Tata y Mamama
+  </div>
+
 </div>
 
 <audio id="finalAudio" src="tnt.mp3"></audio>
@@ -164,22 +228,41 @@ const ctx = canvas.getContext("2d");
 const audio = document.getElementById("finalAudio");
 
 /* click inicial */
+let videoIniciado = false;
+
 document.addEventListener("click", () => {
+
+  // click final -> mostrar regalo
   if (esperandoRegalo) {
 
-  esperandoRegalo = false;
+    esperandoRegalo = false;
 
-  // ocultar texto
-  document.getElementById("textoRegalo").style.display = "none";
+    // ocultar texto
+    document.getElementById("textoRegalo").style.opacity = 0;
 
-  // mostrar regalo
-  document.getElementById("finalImage").src = "regalo.jpg";
+    // ocultar slideshow
+    document.getElementById("final").style.opacity = 0;
 
-  return;
-}
-  cover.style.display = "none";
-  video.play();
-}, { once: true });
+    // mostrar regalo
+    const giftScreen = document.getElementById("giftScreen");
+
+    giftScreen.style.opacity = 1;
+    giftScreen.style.pointerEvents = "auto";
+
+    return;
+  }
+
+  // primer click -> iniciar video
+  if (!videoIniciado) {
+
+    videoIniciado = true;
+
+    cover.style.display = "none";
+
+    video.play();
+  }
+
+});
 
 /* termina el video */
 video.addEventListener("ended", () => {
@@ -299,12 +382,22 @@ function startFinalSlideshow() {
   const img = document.getElementById("finalImage");
 
   const images = [
-    "final1.jpg",
-    "final2.jpg",
-    "final3.jpg",
-    "final4.jpg",
-    "final5.jpg",
-    "final6.jpg"
+    "final.jpg",
+    "final (1).jpg",
+    "final (2).jpg",
+    "final (3).jpg",
+    "final (4).jpg",
+    "final (5).jpg",
+    "final (6).jpg",
+    "final (7).jpg",
+    "final (8).jpg",
+    "final (9).jpg",
+    "final (10).jpg",
+    "final (11).jpg",
+    "final (12).jpg",
+    "final (13).jpg",
+    "final (14).jpg",
+    "final (15).jpg"
   ];
 
   let index = 0;
