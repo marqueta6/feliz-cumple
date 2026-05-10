@@ -1,0 +1,394 @@
+# Efecto “pared que se derrumba” usando tiles + canvas
+
+La idea:
+
+* termina el video
+* se congela el último frame
+* el frame se divide en MUCHOS cuadrados
+* los cuadrados caen por gravedad
+* parece que la pared se derrumba
+
+---
+
+## 1. HTML
+
+```html
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Derrumbe</title>
+
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background: black;
+    }
+
+    #cover {
+      position: fixed;
+      inset: 0;
+      z-index: 10;
+    }
+
+    #cover img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    #textoInicio {
+      position: absolute;
+      bottom: 400px;
+      width: 100%;
+      text-align: center;
+      color: white;
+      font-size: 3.5rem;
+    }
+
+    #videoContainer {
+      position: fixed;
+      inset: 0;
+      z-index: 5;
+      background: black;
+    }
+
+    #video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    #crumbleCanvas {
+      position: fixed;
+      inset: 0;
+      z-index: 20;
+      pointer-events: none;
+      display: none;
+    }
+
+#final {
+  position: fixed;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 1s ease;
+  z-index: 1;
+  background: black;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#finalImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+
+  opacity: 1;
+  transition: opacity 1s ease;
+}
+#textoRegalo {
+  position: fixed;
+  bottom: 400px;
+  width: 100%;
+  text-align: center;
+
+  color: white;
+  font-size: 3rem;
+  font-weight: bold;
+
+  opacity: 0;
+  transition: opacity 1s ease;
+
+  z-index: 50;
+
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.05);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+  </style>
+</head>
+<body>
+
+<!-- portada -->
+<div id="cover">
+  <img src="portada.jpg">
+  <div id="textoInicio">👆 Tocá para empezar a remodelar</div>
+</div>
+
+<!-- video -->
+<div id="videoContainer">
+  <video id="video" playsinline>
+    <source src="video.mp4" type="video/mp4">
+  </video>
+</div>
+
+<!-- canvas derrumbe -->
+<canvas id="crumbleCanvas"></canvas>
+
+<!-- final -->
+<div id="final">
+  <img id="finalImage" src="final1.jpg">
+</div>
+
+<div id="textoRegalo">
+  👆 Tocá de nuevo para recibir tu regalo
+</div>
+
+<audio id="finalAudio" src="tnt.mp3"></audio>
+
+<script>
+
+const cover = document.getElementById("cover");
+const video = document.getElementById("video");
+const videoContainer = document.getElementById("videoContainer");
+const final = document.getElementById("final");
+const canvas = document.getElementById("crumbleCanvas");
+const ctx = canvas.getContext("2d");
+const audio = document.getElementById("finalAudio");
+
+/* click inicial */
+document.addEventListener("click", () => {
+  if (esperandoRegalo) {
+
+  esperandoRegalo = false;
+
+  // ocultar texto
+  document.getElementById("textoRegalo").style.display = "none";
+
+  // mostrar regalo
+  document.getElementById("finalImage").src = "regalo.jpg";
+
+  return;
+}
+  cover.style.display = "none";
+  video.play();
+}, { once: true });
+
+/* termina el video */
+video.addEventListener("ended", () => {
+  
+  // música
+  audio.volume = 1;
+  audio.play().catch(() => {});
+
+  // tamaño canvas
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  canvas.style.display = "block";
+
+  // dibujar último frame
+  ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+  // ocultar video real
+  videoContainer.style.display = "none";
+
+  startCrumble();
+});
+
+function startCrumble() {
+
+  const pieces = [];
+
+  // tamaño de cada bloque
+  const size = 256;
+
+  // crear piezas
+  for (let y = 0; y < canvas.height; y += size) {
+    for (let x = 0; x < canvas.width; x += size) {
+
+      const imageData = ctx.getImageData(x, y, size, size);
+
+      pieces.push({
+        x,
+        y,
+        width: size,
+        height: size,
+        imageData,
+
+        vx: (Math.random() - 0.5) * 4,
+        vy: Math.random() * -8,
+
+        gravity: 0.55,
+        rotation: (Math.random() - 0.5) * 0.03,
+        angle: 0
+      });
+    }
+  }
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  animatePieces(pieces);
+}
+
+function animatePieces(pieces) {
+
+  function frame() {
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    let visiblePieces = 0;
+
+    for (const p of pieces) {
+
+      p.vy += p.gravity;
+      p.x += p.vx;
+      p.y += p.vy;
+      p.angle += p.rotation;
+
+      if (p.y < canvas.height + 100) {
+
+        visiblePieces++;
+
+        const tempCanvas = document.createElement("canvas");
+        tempCanvas.width = p.width;
+        tempCanvas.height = p.height;
+
+        const tempCtx = tempCanvas.getContext("2d");
+        tempCtx.putImageData(p.imageData, 0, 0);
+
+        ctx.save();
+
+        ctx.translate(p.x + p.width / 2, p.y + p.height / 2);
+        ctx.rotate(p.angle);
+
+        ctx.drawImage(
+          tempCanvas,
+          -p.width / 2,
+          -p.height / 2
+        );
+
+        ctx.restore();
+      }
+    }
+
+    // mientras haya piezas visibles
+    if (visiblePieces > 0) {
+      requestAnimationFrame(frame);
+    } else {
+      // reveal final
+      startFinalSlideshow();
+    }
+  }
+
+  frame();
+}
+
+let slideshowActivo = false;
+let esperandoRegalo = false;
+
+function startFinalSlideshow() {
+
+  const final = document.getElementById("final");
+  const img = document.getElementById("finalImage");
+
+  const images = [
+    "final1.jpg",
+    "final2.jpg",
+    "final3.jpg",
+    "final4.jpg",
+    "final5.jpg",
+    "final6.jpg"
+  ];
+
+  let index = 0;
+  slideshowActivo = true;
+
+  // mostrar escena final
+  final.style.opacity = 1;
+
+  // slideshow
+  const interval = setInterval(() => {
+
+    img.style.opacity = 0;
+
+    setTimeout(() => {
+
+      index = (index + 1) % images.length;
+
+      img.src = images[index];
+
+      img.style.opacity = 1;
+
+    }, 650);
+
+  }, 1200);
+
+  // terminar slideshow a los 18s
+  setTimeout(() => {
+
+    clearInterval(interval);
+
+    slideshowActivo = false;
+    esperandoRegalo = true;
+
+    // mostrar texto
+    document.getElementById("textoRegalo").style.opacity = 1;
+
+  }, 17000);
+}
+</script>
+
+</body>
+</html>
+```
+
+---
+
+# Qué hace este efecto
+
+* toma el último frame del video
+* lo corta en MUCHOS cuadraditos
+* cada cuadrado tiene:
+
+  * gravedad
+  * velocidad
+  * rotación
+* todos caen como escombros
+
+El resultado visual es MUCHO más parecido a:
+
+* pared derrumbándose
+* bloques cayendo
+* demolición real
+
+que un simple fade o partículas.
+
+---
+
+# Parámetro más importante
+
+```js
+const size = 24;
+```
+
+* más chico → más realista pero más pesado
+* más grande → más performance pero menos detalle
+
+Recomendado móvil:
+
+```js
+const size = 24;
+```
+
+Si querés MUY cinematográfico:
+
+```js
+const size = 16;
+```
