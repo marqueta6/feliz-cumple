@@ -17,7 +17,7 @@ La idea:
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Derrumbe</title>
+  <title>Para Mary 💃🏻</title>
 
   <style>
     body {
@@ -35,7 +35,7 @@ La idea:
     #cover img {
       width: 100%;
       height: 100%;
-      object-fit: cover;
+      object-fit: contain;
     }
 
     #textoInicio {
@@ -57,7 +57,7 @@ La idea:
     #video {
       width: 100%;
       height: 100%;
-      object-fit: cover;
+      object-fit: contain;
     }
 
     #crumbleCanvas {
@@ -72,7 +72,7 @@ La idea:
   position: fixed;
   inset: 0;
   opacity: 0;
-  transition: opacity 1s ease;
+  transition: opacity 0.75s ease;
   z-index: 1;
   background: black;
 
@@ -84,10 +84,10 @@ La idea:
 #finalImage {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
 
   opacity: 1;
-  transition: opacity 1s ease;
+  transition: opacity 0.75s ease;
 }
 #textoRegalo {
   position: fixed;
@@ -100,7 +100,7 @@ La idea:
   font-weight: bold;
 
   opacity: 0;
-  transition: opacity 1s ease;
+  transition: opacity 0.75s ease;
 
   z-index: 50;
 
