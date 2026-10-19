@@ -327,7 +327,7 @@ function animatePieces(pieces) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     let visiblePieces = 0;
-
+    
     for (const p of pieces) {
 
       p.vy += p.gravity;
@@ -362,12 +362,13 @@ function animatePieces(pieces) {
     }
 
     // mientras haya piezas visibles
-    if (visiblePieces > 0) {
-      requestAnimationFrame(frame);
-    } else {
-      // reveal final
+    if (!slideshowActivo && visiblePieces < pieces.length * 0.35) {
       startFinalSlideshow();
     }
+
+    if (visiblePieces > 0) {
+      requestAnimationFrame(frame);
+}
   }
 
   frame();
