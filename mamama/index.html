@@ -45,6 +45,15 @@
     animation: pulse 1.5s infinite;
   }
 
+  #textoInicio {
+      position: absolute;
+      bottom: 200px;
+      width: 100%;
+      text-align: center;
+      color: rgb(20, 0, 0);
+      font-size: 3.5rem;
+  }
+
   #contenido {
     display: none;
     flex-direction: column;
@@ -104,6 +113,9 @@
 
 <div id="puertaContainer">
   <img id="puerta" src="puerta.png" alt="Puerta">
+  <div id="textoInicio">👆 Toca la puerta <br>
+    para entrar al taller
+  </div>
 </div>
 
 <div id="contenido">
@@ -138,7 +150,7 @@
         audio.play().catch(() => {});
       }, 1000);
       document.getElementById("textoMedio").innerHTML = `
-        <h2>Toca una vez mas para recibir tu regalo</h2>
+        <h2>👆 Toca una vez mas para recibir tu regalo</h2>
     `;
     }
     
